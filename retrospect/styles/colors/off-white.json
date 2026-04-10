@@ -1,0 +1,35 @@
+{
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"color": "#faf9f6",
+					"name": "Color 1",
+					"slug": "theme-1"
+				},
+				{
+					"color": "#dddddd",
+					"name": "Color 2",
+					"slug": "theme-2"
+				},
+				{
+					"color": "#9c9c9c",
+					"name": "Color 3",
+					"slug": "theme-3"
+				},
+				{
+					"color": "#333333",
+					"name": "Color 4",
+					"slug": "theme-4"
+				},
+				{
+					"color": "#000000",
+					"name": "Color 5",
+					"slug": "theme-5"
+				}
+			]
+		}
+	},
+	"version": 3,
+	"title": "Off white"
+}

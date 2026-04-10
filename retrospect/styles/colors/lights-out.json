@@ -1,0 +1,35 @@
+{
+	"settings": {
+		"color": {
+			"palette": [
+				{
+					"color": "#333333",
+					"name": "Color 1",
+					"slug": "theme-1"
+				},
+				{
+					"color": "#555555",
+					"name": "Color 2",
+					"slug": "theme-2"
+				},
+				{
+					"color": "#bbbbbb",
+					"name": "Color 3",
+					"slug": "theme-3"
+				},
+				{
+					"color": "#ffffff",
+					"name": "Color 4",
+					"slug": "theme-4"
+				},
+				{
+					"color": "#e6e6e6",
+					"name": "Color 5",
+					"slug": "theme-5"
+				}
+			]
+		}
+	},
+	"version": 3,
+	"title": "Lights out"
+}
