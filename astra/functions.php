@@ -202,3 +202,81 @@ require_once ASTRA_THEME_DIR . 'inc/core/markup/class-astra-markup.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-filters.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-hooks.php';
 require_once ASTRA_THEME_DIR . 'inc/core/deprecated/deprecated-functions.php';
+
+/**
+ * Output VideoObject Schema for YouTube Embeds
+ */
+function astra_child_youtube_video_schema() {
+    if ( is_singular() ) {
+        global $post;
+        $content = $post->post_content;
+
+        // Match YouTube URLs (watch, embed, youtu.be)
+        $pattern = '/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+
+        if ( preg_match_all( $pattern, $content, $matches ) ) {
+            $video_ids = array_unique( $matches[1] );
+
+            foreach ( $video_ids as $video_id ) {
+                $schema = array(
+                    '@context'    => 'https://schema.org',
+                    '@type'       => 'VideoObject',
+                    'name'        => get_the_title( $post->ID ) . ' Video',
+                    'description' => wp_trim_words( strip_shortcodes( wp_strip_all_tags( $content ) ), 20, '...' ),
+                    'thumbnailUrl'=> 'https://img.youtube.com/vi/' . $video_id . '/maxresdefault.jpg',
+                    'uploadDate'  => get_the_date( 'c', $post->ID ),
+                    'embedUrl'    => 'https://www.youtube.com/embed/' . $video_id,
+                );
+
+                // Prevent empty description error
+                if ( empty( $schema['description'] ) ) {
+                    $schema['description'] = 'Video for ' . get_the_title( $post->ID );
+                }
+
+                echo '<script type="application/ld+json">' . wp_json_encode( $schema ) . '</script>' . "\n";
+            }
+        }
+    }
+}
+add_action( 'wp_head', 'astra_child_youtube_video_schema' );
+
+/**
+ * 301 Redirect for Specific 404 Pages
+ */
+function astra_child_404_redirects() {
+    $request_uri = $_SERVER['REQUEST_URI'];
+
+    // Redirect /global/ and /the-journey/ to home
+    if ( preg_match( '/^\/(global|the-journey)\/?(?:\?.*)?$/i', $request_uri ) ) {
+        wp_safe_redirect( home_url( '/' ), 301 );
+        die();
+    }
+}
+add_action( 'template_redirect', 'astra_child_404_redirects' );
+
+/**
+ * Fix Redirect Loops for /password-reset/ and /logout/
+ */
+function astra_child_fix_redirect_loops() {
+    $request_uri = $_SERVER['REQUEST_URI'];
+
+    // Check if we are on the password reset or logout pages
+    if ( strpos( $request_uri, '/password-reset/' ) !== false || strpos( $request_uri, '/logout/' ) !== false ) {
+        // Remove canonical redirect which can cause loops on custom endpoints
+        remove_filter('template_redirect', 'redirect_canonical');
+    }
+}
+add_action( 'template_redirect', 'astra_child_fix_redirect_loops', 1 );
+
+/**
+ * Add noindex, follow to utility pages to prevent "Crawled - currently not indexed"
+ */
+function astra_child_noindex_utility_pages() {
+    $request_uri = $_SERVER['REQUEST_URI'];
+
+    // Check if the current URL contains the utility endpoints
+    if ( preg_match( '/\/(login|account|members)\/?(?:\?.*)?$/i', $request_uri ) ) {
+        echo '<meta name="robots" content="noindex, follow">' . "\n";
+    }
+}
+add_action( 'wp_head', 'astra_child_noindex_utility_pages' );
