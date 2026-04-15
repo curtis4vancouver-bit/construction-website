@@ -139,8 +139,8 @@ function keystone_recomposition_generate_video_schema() {
 	$content = $post->post_content;
 
 	// Regular expression to find YouTube iframes or URLs
-	// This matches YouTube iframes or basic YouTube URLs on their own lines.
-	$pattern = '/(?:<iframe[^>]*src="[^"]*youtube\.com\/embed\/([^"?]+)[^"]*"[^>]*>|<\/iframe>|(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+))/i';
+	// Strictly matches YouTube's 11-character ID format.
+	$pattern = '/(?:<iframe[^>]*src="[^"]*youtube\.com\/embed\/([a-zA-Z0-9_-]{11})[^"]*"[^>]*>|(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11}))/i';
 
 	if ( preg_match_all( $pattern, $content, $matches ) ) {
 		// $matches[1] will have iframe IDs, $matches[2] will have URL IDs
@@ -160,8 +160,6 @@ function keystone_recomposition_generate_video_schema() {
 			$youtube_url = 'https://www.youtube.com/watch?v=' . $video_id;
 			$oembed_url  = 'https://www.youtube.com/oembed?url=' . urlencode( $youtube_url ) . '&format=json';
 
-			$response = wp_remote_get( $oembed_url );
-
 			$video_schema = array(
 				'@context'     => 'https://schema.org',
 				'@type'        => 'VideoObject',
@@ -170,15 +168,28 @@ function keystone_recomposition_generate_video_schema() {
 			);
 
 			$api_success = false;
-			if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
-				$body = wp_remote_retrieve_body( $response );
-				$data = json_decode( $body, true );
+			$transient_key = 'yt_oembed_' . $video_id;
+			$cached_data = get_transient( $transient_key );
 
-				if ( $data && isset( $data['title'] ) ) {
-					$video_schema['name']         = $data['title'];
-					$video_schema['thumbnailUrl'] = isset( $data['thumbnail_url'] ) ? $data['thumbnail_url'] : '';
-					$api_success = true;
+			if ( false === $cached_data ) {
+				$response = wp_remote_get( $oembed_url );
+				if ( ! is_wp_error( $response ) && wp_remote_retrieve_response_code( $response ) === 200 ) {
+					$body = wp_remote_retrieve_body( $response );
+					$data = json_decode( $body, true );
+					if ( $data && isset( $data['title'] ) ) {
+						$cached_data = array(
+							'title' => $data['title'],
+							'thumbnail_url' => isset( $data['thumbnail_url'] ) ? $data['thumbnail_url'] : ''
+						);
+						set_transient( $transient_key, $cached_data, 24 * HOUR_IN_SECONDS );
+					}
 				}
+			}
+
+			if ( $cached_data && isset( $cached_data['title'] ) ) {
+				$video_schema['name']         = $cached_data['title'];
+				$video_schema['thumbnailUrl'] = isset( $cached_data['thumbnail_url'] ) ? $cached_data['thumbnail_url'] : '';
+				$api_success = true;
 			}
 
 			// Fallback values or missing required properties
