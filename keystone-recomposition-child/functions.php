@@ -159,17 +159,34 @@ function keystone_recomposition_child_youtube_schema() {
         $video_ids = array_unique( $matches[1] );
 
         foreach ( $video_ids as $video_id ) {
-            $thumbnail_url = 'https://img.youtube.com/vi/' . $video_id . '/maxresdefault.jpg';
+            $thumbnail_urls = array(
+                'https://img.youtube.com/vi/' . $video_id . '/maxresdefault.jpg',
+                'https://img.youtube.com/vi/' . $video_id . '/sddefault.jpg',
+                'https://img.youtube.com/vi/' . $video_id . '/hqdefault.jpg',
+                'https://img.youtube.com/vi/' . $video_id . '/default.jpg'
+            );
             $embed_url = 'https://www.youtube.com/embed/' . $video_id;
+            $content_url = 'https://www.youtube.com/watch?v=' . $video_id;
+
+            $video_name = get_the_title();
+            if ( empty( $video_name ) ) {
+                $video_name = 'Video for ' . get_bloginfo( 'name' );
+            }
+
+            $video_description = wp_trim_words( wp_strip_all_tags( $content ), 40, '...' );
+            if ( empty( $video_description ) ) {
+                $video_description = $video_name;
+            }
 
             $video_schema = array(
                 '@context' => 'https://schema.org',
                 '@type' => 'VideoObject',
-                'name' => get_the_title(),
-                'description' => wp_trim_words( wp_strip_all_tags( $content ), 40, '...' ),
-                'thumbnailUrl' => array( $thumbnail_url ),
+                'name' => $video_name,
+                'description' => $video_description,
+                'thumbnailUrl' => $thumbnail_urls,
                 'uploadDate' => get_the_date('c'),
-                'embedUrl' => $embed_url
+                'embedUrl' => $embed_url,
+                'contentUrl' => $content_url
             );
 
             $json_video_schema = wp_json_encode( $video_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT );
