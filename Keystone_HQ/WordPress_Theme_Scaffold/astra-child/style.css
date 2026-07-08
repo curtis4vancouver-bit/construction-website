@@ -230,3 +230,50 @@ blockquote {
         opacity: 1;
     }
 }
+
+/* =====================================================================
+   HEADER LAYOUT OVERRIDES (Force Logo Left, Menu Center, Social Right)
+   ===================================================================== */
+@media (min-width: 922px) {
+    /* Force the header container to use flexbox and span full width */
+    .ast-primary-header-bar .ast-builder-grid-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 40px !important;
+    }
+    
+    /* Left Column: Logo */
+    .ast-primary-header-bar .site-header-primary-section-left {
+        order: 1 !important;
+        flex: 1 !important;
+        justify-content: flex-start !important;
+    }
+    
+    /* Center Column: Navigation Menu (originally in right section) */
+    .ast-primary-header-bar .site-header-primary-section-right {
+        order: 2 !important;
+        flex: 3 !important; /* Give menu more space so it doesn't wrap to two lines */
+        justify-content: center !important;
+    }
+    
+    /* Right Column: Social Icons (originally in center section) */
+    .ast-primary-header-bar .site-header-primary-section-center {
+        order: 3 !important;
+        flex: 1 !important;
+        justify-content: flex-end !important;
+    }
+    
+    /* Prevent the menu from wrapping onto multiple lines */
+    .main-header-menu {
+        flex-wrap: nowrap !important;
+    }
+    
+    /* Add slight margin between menu items for a cleaner look */
+    .main-header-menu > .menu-item > .menu-link {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+}
