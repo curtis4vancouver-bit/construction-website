@@ -106,3 +106,17 @@ if ( isset( $_GET['get_post_inventory'] ) && $_GET['get_post_inventory'] === 'so
 
 
 
+
+if ( isset( $_GET['keystone_fix_header'] ) ) {
+    $astra_settings = get_option('astra-settings', array());
+    if (isset($astra_settings['header-desktop-items']['primary'])) {
+        $astra_settings['header-desktop-items']['primary']['primary_left'] = array('title_tagline');
+        $astra_settings['header-desktop-items']['primary']['primary_center'] = array('menu-1');
+        $astra_settings['header-desktop-items']['primary']['primary_right'] = array('social-icons-1');
+        update_option('astra-settings', $astra_settings);
+        echo "HEADER LAYOUT FIXED IN DB!";
+    } else {
+        echo "PRIMARY HEADER SETTINGS NOT FOUND!";
+    }
+    exit;
+}
