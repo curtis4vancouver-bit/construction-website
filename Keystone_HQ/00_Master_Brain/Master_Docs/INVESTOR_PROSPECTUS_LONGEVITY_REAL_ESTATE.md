@@ -37,14 +37,14 @@ Our developments are engineered from the foundation up as "Active Biological Hea
 
 ---
 
-## 3. The Joint Venture & Funding Structure
+## 3. The Joint Venture & Funding Structure ($2,000,000 to $5,000,000 Development Model)
 
-We are pitching to **UHNW Individuals, Family Offices, and Wellness Real Estate Syndicates** under a clear, risk-mitigated partnership model:
+We are pitching to **UHNW Individuals, Family Offices, and Wellness Real Estate Syndicates** under a clear, 50/50 equity partnership model:
 
 | Partner Role | Contribution | Return / Dividend |
 | :--- | :--- | :--- |
-| **Capital Partner (Investor)** | 100% Acquisition & Construction Funding | Preferred 8-12% ROI on exit, 60% Equity split on sales, and permanent access/membership. |
-| **Development Partner (Keystone)** | EPC Project Management, Site Selection, Design, and Wellness Integration | 40% Equity split, Developer fee (5-8% of construction cost), and operational management. |
+| **Capital Partner (Investor)** | 100% Land Acquisition & Construction Funding ($2,000,000 - $5,000,000) | Full principal returned first, plus **50% of net profits** and property appreciation. Permanent retreat access. |
+| **Development Partner (Keystone)** | EPC Project Management, Site Sourcing, Custom Design, Construction, and Wellness Operations | **50% of net profits** and property appreciation. Managing & operational fees are drawn from project expenses. |
 
 ### The Lifestyle Dividend
 For high-net-worth investors, the financial return is paired with a **lifestyle dividend**:
