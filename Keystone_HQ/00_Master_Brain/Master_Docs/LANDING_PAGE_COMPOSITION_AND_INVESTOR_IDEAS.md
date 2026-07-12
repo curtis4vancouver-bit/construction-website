@@ -8,7 +8,7 @@
 
 ## 1. Landing Page Wireframe: Mexico Longevity Retreats JV
 *   **Target Audience:** UHNW Angel Investors, Wellness Syndicates, Lifestyle Partners.
-*   **Funding Target:** $200,000 to $500,000 (Seed Capital for Tulum/Cabo pilot lease & launch).
+*   **Funding Target:** $250,000 to $500,000 (Seed Capital for Tulum/Cabo pilot lease & launch).
 *   **Profit Split:** 50/50 Equity Split (Wayne manages operations, investor receives passive returns).
 *   **Location:** Hosted on `keystonerecomposition.com/retreat-partnership/`
 
