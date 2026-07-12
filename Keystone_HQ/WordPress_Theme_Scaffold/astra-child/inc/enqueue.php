@@ -4,11 +4,28 @@
  * 1. Enqueue Parent Stylesheet and Google Fonts
  */
 function kp_enqueue_styles() {
-    // Enqueue parent Astra style
-    wp_enqueue_style( 'astra-parent-theme-css', get_template_directory_uri() . '/style.css' );
+    // Enqueue parent Astra style with parent theme version
+    $parent_theme = wp_get_theme( get_template() );
+    wp_enqueue_style( 
+        'astra-parent-theme-css', 
+        get_template_directory_uri() . '/style.css', 
+        array(), 
+        $parent_theme->get( 'Version' ) 
+    );
     
-    // Enqueue Child customized style
-    wp_enqueue_style( 'astra-child-keystone-css', get_stylesheet_directory_uri() . '/style.css', array( 'astra-parent-theme-css' ), '1.0.3' );
+    // Enqueue Child customized style with dynamic cache-busting via filesystem timestamps
+    $child_css_path = get_stylesheet_directory() . '/style.css';
+    $child_css_uri  = get_stylesheet_directory_uri() . '/style.css';
+    $child_theme    = wp_get_theme();
+    $child_css_version = file_exists( $child_css_path ) ? filemtime( $child_css_path ) : $child_theme->get( 'Version' );
+    
+    wp_enqueue_style( 
+        'astra-child-keystone-css', 
+        $child_css_uri, 
+        array( 'astra-parent-theme-css' ), 
+        $child_css_version, 
+        'all' 
+    );
     
     // Load typography fonts (Montserrat, Inter, Outfit)
     wp_enqueue_style( 'keystone-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700&family=Outfit:wght@400;600;700;800&display=swap', array(), null );

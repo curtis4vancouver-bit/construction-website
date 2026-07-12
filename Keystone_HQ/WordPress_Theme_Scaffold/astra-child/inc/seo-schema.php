@@ -187,7 +187,7 @@ function kp_youtube_schema() {
     // Fallback: search for [keystone_video id="..."] or plain youtube URL in content
     if ( empty( $video_url ) ) {
         $content = $post->post_content;
-        if ( preg_match( '~\[keystone_video\s+id=["\']([a-zA-Z0-9_-]+)["\']]~', $content, $matches ) ) {
+        if ( preg_match( '~\[keystone_video[^\]]*id=["\']([a-zA-Z0-9_-]+)["\']~i', $content, $matches ) ) {
             $youtube_id = $matches[1];
             $video_url = 'https://www.youtube.com/watch?v=' . $youtube_id;
         } elseif ( preg_match( '~(?:youtube\.com/(?:[^/]+/.+/(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/|youtube\.com/shorts/)([^"&?/ ]{11})~i', $content, $matches ) ) {
@@ -321,7 +321,7 @@ add_filter( 'rank_math/sitemap/video/post', function( $video, $post_id ) {
     if ( empty( $youtube_id ) ) {
         $post = get_post( $post_id );
         if ( $post ) {
-            if ( preg_match( '~\[keystone_video\s+id=["\']([a-zA-Z0-9_-]+)["\']]~', $post->post_content, $matches ) ) {
+            if ( preg_match( '~\[keystone_video[^\]]*id=["\']([a-zA-Z0-9_-]+)["\']~i', $post->post_content, $matches ) ) {
                 $youtube_id = $matches[1];
             } elseif ( preg_match( '~(?:youtube\.com/(?:[^/]+/.+/(?:v|e(?:mbed)?)/|.*[?&]v=|embed/)|youtu\.be/|youtube\.com/shorts/)([^"&?/ ]{11})~i', $post->post_content, $matches ) ) {
                 $youtube_id = $matches[1];
