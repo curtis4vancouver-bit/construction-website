@@ -1,6 +1,6 @@
 # Keystone Protocols — Video Production Registry
 # This document is ingested into the Vector Brain to prevent content overlap.
-# Updated: 2026-06-18
+# Updated: 2026-07-13
 
 ## PURPOSE
 Before writing ANY new script, the agent MUST search this registry in the brain
@@ -11,13 +11,26 @@ must pivot to a fresh angle or refuse to proceed.
 
 ## COMPLETED PRODUCTIONS (Scripts Written & Assets Generated)
 
-### LONG-FORM (Wayne + Victoria Podcast)
+### LONG-FORM (Keystone Recomposition / Protocols)
 | Script ID | Title | Key Topics | Status |
 |-----------|-------|------------|--------|
-| LONG_005 | Retatrutide Is Coming — Is Your Foundation Ready? | retatrutide, phase 3 trials, triple agonist, GLP-1 vs GIP vs glucagon, muscle loss, FDA, compounding | PRODUCED |
-| LONG_006 | The Triple Threat: Retatrutide, Tirzepatide, and the FDA's Next Move | retatrutide, tirzepatide, triple agonist, TRIUMPH-1 trial, FDA compounding ban, PCAC July meeting, gray market, muscle preservation | PRODUCED |
+| LONG_001 | I Lost 38 lbs on Mounjaro — While Building Houses (26 Weeks) | Tirzepatide, construction, 26 weeks case study, weight loss | ARCHIVED |
+| LONG_002 | How I Lost 38 lbs on Mounjaro at 42 | Tirzepatide, 42 years old, physical foundation, recomposition | ARCHIVED |
+| LONG_003 | The Wolverine Stack: BPC-157 + TB-500 Case Study | BPC-157, TB-500, general contractor, tissue repair, joint recovery | ARCHIVED |
+| LONG_004 | Mounjaro Muscle Loss: The 4-Pillar Protocol | muscle loss, 4-pillar builder blueprint, preservation, GLP-1 | ARCHIVED |
+| LONG_005 | Why Your Belly Fat Won't Budge (The Fix) | visceral fat, belly fat, clinical science, AMPK, fat loss | ARCHIVED |
+| LONG_006 | The FDA Peptide Ban is ENDING — 11 Peptides Under Review (2026) | Category 2 list, FDA ban, compound status, legal timeline | ARCHIVED |
+| LONG_007 | KLOW vs GLOW Peptide Stacks: The Science Nobody Explains | GHK-Cu, copper, zinc, mineral cofactors, joint collapse | ARCHIVED |
+| LONG_008 | Retatrutide Phase 3 Data: The Most Powerful GLP-1 Ever | Retatrutide, Phase 3 trial data, triple agonist, GLP-1/GIP/Glucagon | ARCHIVED |
+| LONG_009 | The Dangerous Mistake I Made Stacking CJC-1295 with GHK-Cu | CJC-1295, secretagogues, GHK-Cu, copper toxicity, zinc depletion | ARCHIVED |
+| LONG_010 | Retatrutide vs Tirzepatide: The FDA's Next Move Changes Everything | Retatrutide, Tirzepatide, triple agonist, FDA approval timeline | ARCHIVED |
+| LONG_011 | Is This the End of Peptides? FDA Compounding Hearings Update | FDA compounding ban, PCAC hearings, public testimonies, BPC-157 | ARCHIVED |
+| LONG_012 | CJC-1295 & Ipamorelin for GLP-1 Fatigue | CJC-1295, Ipamorelin, GLP-1 fatigue, growth hormone secretagogues | ARCHIVED |
+| LONG_013 | Tirzepatide & CJC-1295: Stop Losing Muscle on GLP-1s | Tirzepatide, CJC-1295, muscle preservation, secretagogue stacks | ARCHIVED |
+| LONG_014 | The FDA's Secret Fight Over the 10-Year Age Reversal Peptide | Epitalon, telomeres, hTERT, melatonin AANAT, Khavinson protocol, FDA PCAC | ARCHIVED |
+| LONG_015 | How I Fight GLP-1 Fatigue: My Personal Energy Stack & Recovery Case Study | Tirzepatide, L-Carnitine, CoQ10, L-Tyrosine, Creatine, energy stack, case study, recovery | ARCHIVED |
 
-> ⚠️ **OVERLAP DETECTED**: LONG_005 and LONG_006 cover nearly identical ground (retatrutide, triple agonist, FDA, muscle loss). This must NEVER happen again.
+
 
 ### SHORTS (Protocol Channel)
 | Script ID | Title | Key Topics |
@@ -29,12 +42,16 @@ must pivot to a fresh angle or refuse to proceed.
 | SCRIPT_006 | (Final Flow) | — |
 | SCRIPT_007 | Pituitary Reset | pituitary gland, GH secretagogues, natural reset |
 | SCRIPT_008 | Klow Glow Zinc Trap | zinc, glow, micronutrient trap |
+| PROTO_SHORT_035 | MOTS-c Mitochondrial Engine & FDA Compounding Battle | MOTS-c, mitochondrial peptide, FDA hearings, compounding ban, Tirzepatide, SI joint recovery, Gilded Pulse |
+| PROTO_SHORT_036 | Mounjaro Fatigue & MOTS-c Stack | Mounjaro, fatigue, MOTS-c, mitochondrial energy, GLP-1 fatigue |
 | SHORT_001 | BPC-157 + Semaglutide Stack | BPC-157, semaglutide, stacking peptides |
 | SHORT_002 | Creatine Lies | creatine, myths, debunking |
 | SHORT_003 | Retatrutide Muscle Loss | retatrutide, muscle preservation |
 | SHORT_004 | Retatrutide Triple G | retatrutide, triple receptor |
 | SHORT_005 | Builder's Protocol 4 Pillars | 4 pillars, protocol framework |
 | SHORT_006 | The FDA Just Killed Your Access | FDA compounding ban, retatrutide Phase 3, companion to LONG_006 |
+| SHORT_015 | The FDA's Secret Fight Over the 10-Year Age Reversal Peptide | Epitalon, FDA peptide ban, Khavinson protocol, telomere extension, companion to LONG_014 |
+| SHORT_016 | The GLP-1 Energy Secret Nobody Talks About | Tirzepatide energy wall, L-Carnitine, CoQ10, mitochondrial fatigue, companion to LONG_015 |
 
 ### POSSIBILITIES (Construction Channel)
 | Script ID | Title | Key Topics |
@@ -48,12 +65,19 @@ must pivot to a fresh angle or refuse to proceed.
 | MUSIC_001 | Ana Stevenson DJ Set | deep house, Ana character, DJ set |
 | MUSIC_002 | Ana Stevenson DJ Set V2 | deep house, Ana V2 |
 | MUSIC_003 | Gilded Pulse Production | deep house, golden hour rooftop |
+| MUSIC_004 | Sanyo Project | orchestral deep house, dark cello, violin, motivation, construction metaphors, Squamish, Vancouver |
+| MUSIC_005 | Album: Sarcopenic Threshold (10 tracks) | Industrial Tech House, physical training, muscle recovery |
+| MUSIC_006 | Album: Blue Collar Symphony (10 tracks) | Melodic Deep House, classical-fusion, organic violins, piano |
+| MUSIC_007 | Album: APOLLO Protocol (10 tracks) | Epic Progressive Deep House, longevity science, peptide optimization |
+| MUSIC_008 | Album: Sovereign Reverb (10 tracks) | Organic Downtempo Chill, post-workout cold reset, lake sunrise |
+
 
 ---
 
 ## YOUTUBE CHANNEL CATALOG (Keystone Recomposition / OAC — 50 videos)
 
 ### Published (Public)
+- Why is the FDA Banning This 10-Year Age Reversal Peptide? (Epitalon Facts) (2026-07-11)
 - Gilded Pulse — Deep House Mix | Golden Hour Rooftop Set 🌅 (2026-06-17)
 - This sunset hit different 🌅 #deephouse (2026-06-17)
 - Skyline Vibes: Iron & Ice | Deep House Rooftop Mix (2026-05-07)
@@ -132,3 +156,7 @@ These topics have been thoroughly covered. New scripts MUST find a FRESH angle:
 - Gut microbiome changes on GLP-1
 - Women-specific GLP-1 considerations
 - Mental health effects of rapid weight loss
+
+
+---
+ **See also:** [[MAP_OF_CONTENTS|← Directory Index]]
