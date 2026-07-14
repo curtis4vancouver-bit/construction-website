@@ -77,11 +77,28 @@ add_action( 'init', function() {
  * 1. Enqueue Parent Stylesheet and Google Fonts
  */
 function kr_enqueue_styles() {
-    // Enqueue parent Astra style
-    wp_enqueue_style( 'astra-parent-theme-css', get_template_directory_uri() . '/style.css' );
+    // Enqueue parent Astra style with parent theme version
+    $parent_theme = wp_get_theme( get_template() );
+    wp_enqueue_style( 
+        'astra-parent-theme-css', 
+        get_template_directory_uri() . '/style.css', 
+        array(), 
+        $parent_theme->get( 'Version' ) 
+    );
     
-    // Enqueue Child customized style
-    wp_enqueue_style( 'astra-child-keystone-css', get_stylesheet_directory_uri() . '/style.css', array( 'astra-parent-theme-css' ), '1.0.4' );
+    // Enqueue Child customized style with dynamic cache-busting via filesystem timestamps
+    $child_css_path = get_stylesheet_directory() . '/style.css';
+    $child_css_uri  = get_stylesheet_directory_uri() . '/style.css';
+    $child_theme    = wp_get_theme();
+    $child_css_version = file_exists( $child_css_path ) ? filemtime( $child_css_path ) : $child_theme->get( 'Version' );
+    
+    wp_enqueue_style( 
+        'astra-child-keystone-css', 
+        $child_css_uri, 
+        array( 'astra-parent-theme-css' ), 
+        $child_css_version, 
+        'all' 
+    );
     
     // Load typography fonts (Montserrat, Inter, Outfit)
     wp_enqueue_style( 'keystone-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700&family=Outfit:wght@400;600;700;800&display=swap', array(), null );
@@ -624,41 +641,17 @@ add_filter( 'rank_math/json_ld', function( $data, $jsonld ) {
     return $data;
 }, 9999, 2 );
 
-// Output buffer safety net: strip broken VideoObject schemas from Rank Math
-// Uses a robust approach that handles nested JSON and escaped slashes
-add_action( 'wp_head', function() {
-    ob_start( function( $output ) {
-        // Strategy: find all JSON-LD script tags, decode, check for broken VideoObject, remove
-        $output = preg_replace_callback(
-            '~(<script\s+type=["\']application/ld\+json["\'][^>]*>)(.*?)(</script>)~is',
-            function( $matches ) {
-                $json = json_decode( $matches[2], true );
-                if ( ! is_array( $json ) ) {
-                    return $matches[0]; // Can't parse, leave alone
-                }
-                // Check if this is a VideoObject
-                if ( isset( $json['@type'] ) && $json['@type'] === 'VideoObject' ) {
-                    // Kill it if embedUrl contains 'maxresdefau' (broken Rank Math detection)
-                    if ( isset( $json['embedUrl'] ) && strpos( $json['embedUrl'], 'maxresdefau' ) !== false ) {
-                        return '<!-- Keystone: Removed broken VideoObject with maxresdefau fake ID -->';
-                    }
-                    // Kill it if it has no publisher field (our custom schema always has publisher)
-                    if ( ! isset( $json['publisher'] ) ) {
-                        return '<!-- Keystone: Removed duplicate VideoObject without publisher -->';
-                    }
-                }
-                return $matches[0];
-            },
-            $output
-        );
-        return $output;
-    });
-}, 0 );
-add_action( 'wp_footer', function() {
-    if ( ob_get_level() > 0 ) {
-        ob_end_flush();
+// 2026 Standard Fix: Enforce ISO 8601 timezone for Rank Math Video Schema dynamically
+add_filter( 'rank_math/snippet/rich_snippet_videoobject_entity', function( $entity ) {
+    if ( ! empty( $entity['uploadDate'] ) ) {
+        // Append UTC offset if timezone string is missing (no + or Z)
+        if ( strpos( $entity['uploadDate'], '+' ) === false && strpos( $entity['uploadDate'], 'Z' ) === false ) {
+            // Append default T12:00:00+00:00 to satisfy Google Console strictly
+            $entity['uploadDate'] .= 'T12:00:00+00:00';
+        }
     }
-}, 9999 );
+    return $entity;
+});
 
 /**
  * 10.5 Inject og:video Meta Tags for Google Video Indexing
@@ -680,7 +673,7 @@ function kr_inject_og_video() {
 
     // Fallback: extract from shortcode in content
     if ( empty( $youtube_id ) ) {
-        if ( preg_match( '~\[keystone_video[^\]]*id=["\']([a-zA-Z0-9_-]+)["\']\]~i', $post->post_content, $m ) ) {
+        if ( preg_match( '~\[keystone_video[^\]]*id=["\']([a-zA-Z0-9_-]+)["\']~i', $post->post_content, $m ) ) {
             $youtube_id = $m[1];
         }
     }
@@ -1165,7 +1158,7 @@ function keystone_serve_video_sitemap() {
         // Skip specific page/posts if needed
         $youtube_id = get_post_meta( $post_id, 'keystone_youtube_id', true );
         if ( empty( $youtube_id ) ) {
-            if ( preg_match( '~\[keystone_video\s+id=["\']([a-zA-Z0-9_-]+)["\']]~', $p->post_content, $matches ) ) {
+            if ( preg_match( '~\[keystone_video[^\]]*id=["\']([a-zA-Z0-9_-]+)["\']~i', $p->post_content, $matches ) ) {
                 $youtube_id = $matches[1];
             } elseif ( preg_match( '~(?:youtube\.com/(?:[^/]+/.+/(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/|youtube\.com/shorts/)([^"&?/ ]{11})~i', $p->post_content, $matches ) ) {
                 $youtube_id = $matches[1];
@@ -1282,7 +1275,7 @@ if ( isset( $_GET['heal_video_meta'] ) && $_GET['heal_video_meta'] === 'sovereig
         
         // Extract YouTube ID from content
         $youtube_id = '';
-        if ( preg_match( '~\[keystone_video\s+id=["\']([a-zA-Z0-9_-]+)["\']\]~', $p->post_content, $matches ) ) {
+        if ( preg_match( '~\[keystone_video[^\]]*id=["\']([a-zA-Z0-9_-]+)["\']~i', $p->post_content, $matches ) ) {
             $youtube_id = $matches[1];
         } elseif ( preg_match( '~(?:youtube\.com/(?:[^/]+/.+/(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/|youtube\.com/shorts/)([^"&?/ ]{11})~i', $p->post_content, $matches ) ) {
             $youtube_id = $matches[1];
@@ -2293,3 +2286,18 @@ function keystone_dynamic_llms_txt() {
 }
 
 
+
+/**
+ * 2026 Standard Fix: Intercept post content to repair hardcoded JSON-LD schema blocks.
+ * If a previous agent or user pasted raw JSON-LD directly into the WordPress editor,
+ * this filter will automatically find it, decode it, and append the required timezone
+ * to any uploadDate fields that are missing one, fixing GSC validation instantly.
+ */
+add_filter( 'the_content', function( $content ) {
+    if ( strpos( $content, 'application/ld+json' ) !== false ) {
+        $pattern = '/("uploadDate"\s*:\s*"\d{4}-\d{2}-\d{2})(")/i';
+        $replacement = '$1T12:00:00-07:00$2';
+        $content = preg_replace( $pattern, $replacement, $content );
+    }
+    return $content;
+}, 99 );
