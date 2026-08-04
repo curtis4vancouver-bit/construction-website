@@ -1019,16 +1019,6 @@ add_filter( 'the_content', 'kr_eeat_author_block', 98 );
  * 15. Automatically Append YouTube Subscribe Buttons to All Pages and Posts
  */
 function kr_append_subscribe_buttons( $content ) {
-    if ( is_singular() && is_main_query() ) {
-        if ( strpos( $content, 'sub_confirmation=1' ) === false ) {
-            $subscribe_html = '
-            <div class="keystone-global-subscribe-buttons" style="display:flex; flex-wrap:wrap; gap:15px; margin-top:40px; margin-bottom: 40px; justify-content: center; align-items: center;">
-                <a href="https://www.youtube.com/@keystonerecomposition?sub_confirmation=1" target="_blank" rel="noopener" style="background-color:#cc0000; color:#fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 700; font-family: Outfit, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; transition: opacity 0.3s ease;">&#9654; Subscribe: Keystone Recomposition</a>
-                <a href="https://www.youtube.com/@keystoneprotocols?sub_confirmation=1" target="_blank" rel="noopener" style="background-color:#cc0000; color:#fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: 700; font-family: Outfit, sans-serif; text-transform: uppercase; letter-spacing: 0.05em; transition: opacity 0.3s ease;">&#9654; Subscribe: Keystone Protocols</a>
-            </div>';
-            $content .= $subscribe_html;
-        }
-    }
     return $content;
 }
 add_filter( 'the_content', 'kr_append_subscribe_buttons', 99 );
