@@ -1,0 +1,29 @@
+# Keystone Websites - Official Robots.txt
+User-agent: *
+Allow: /
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+Disallow: /trackback/
+Disallow: /xmlrpc.php
+
+# Sitemaps
+Sitemap: https://keystonepossibilities.ca/sitemap_index.xml
+Sitemap: https://keystonepossibilities.ca/video-sitemap.xml
+Sitemap: https://keystonerecomposition.com/sitemap_index.xml
+Sitemap: https://keystonerecomposition.com/video-sitemap.xml
+
+# Search Engine & AI Bot Permissions
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
