@@ -1,0 +1,195 @@
+/*
+Theme Name: Keystone Possibilities Child
+Theme URI: https://keystonepossibilities.ca/
+Description: Luxury Child Theme for Keystone Possibilities Ltd — Certified BC Builder #52603. High-end SEO, Local GEO Schema, and Zero-Visual-Drift Architecture.
+Author: Wayne Stevenson & Keystone Orchestration Engine
+Author URI: https://keystonepossibilities.ca/
+Template: astra
+Version: 2.0.0
+*/
+
+/* ── 100% Visual Lock — Luxury Styling Additions ──────────────────────── */
+.keystone-geo-footer-mesh {
+    background: rgba(10, 15, 29, 0.95);
+    border-top: 1px solid rgba(0, 240, 255, 0.2);
+    padding: 30px 20px;
+    margin-top: 40px;
+    font-family: inherit;
+}
+
+.keystone-geo-footer-mesh h4 {
+    color: #00f0ff;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.keystone-geo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.keystone-geo-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.keystone-geo-link:hover {
+    color: #00f0ff;
+    text-decoration: underline;
+}
+
+/* Mobile Click-to-Call Sticky Floating Button */
+.keystone-mobile-call-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .keystone-mobile-call-bar {
+        display: flex;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99999;
+        background: linear-gradient(135deg, #00f0ff 0%, #0070f3 100%);
+        color: #000;
+        font-weight: 700;
+        padding: 12px 18px;
+        border-radius: 30px;
+        box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
+        text-decoration: none;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ==========================================================================
+   Quiet Luxury Floating Header Navigation & Single-Row Horizontal Layout
+   ========================================================================== */
+.site-header,
+.ast-primary-header-bar,
+.main-header-bar,
+#ast-desktop-header,
+.ast-above-header,
+.ast-main-header-wrap,
+header.site-header,
+.ast-header-break-point .ast-primary-header-bar {
+    background: rgba(10, 15, 25, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+}
+
+.nav-menu,
+.main-navigation a,
+.site-header nav,
+.site-header nav a,
+.main-header-menu > .menu-item > a,
+.main-header-menu .menu-item a,
+.ast-desktop-header .main-header-menu .menu-item a,
+.ast-nav-menu a,
+.ast-header-sections-navigation a,
+.main-header-menu .menu-link {
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+}
+
+@media (min-width: 922px) {
+    .site-header nav,
+    .main-navigation,
+    .nav-menu,
+    .main-header-menu,
+    .ast-nav-menu,
+    .ast-builder-menu {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+    }
+}
+
+/* ==========================================================================
+   2026 QUIET LUXURY DESIGN SYSTEM — PILL BUTTONS & CARD DEPTH OVERRIDES
+   ========================================================================== */
+.wp-block-button .wp-block-button__link,
+.wp-block-button a,
+a.wp-block-button__link,
+.ast-custom-button,
+button.wp-element-button,
+.gold-action-btn,
+.cta-toggle-btn,
+.kp-btn-gold,
+.kp-btn-cyan,
+.kp-btn-outline,
+.btn,
+.button,
+input[type="submit"],
+button[type="submit"],
+.cta-button,
+a.cta-btn {
+  border-radius: 9999px !important;
+  transition: all 0.3s ease !important;
+}
+
+.wp-block-button .wp-block-button__link:hover,
+.wp-block-button a:hover,
+a.wp-block-button__link:hover,
+.ast-custom-button:hover,
+button.wp-element-button:hover,
+.gold-action-btn:hover,
+.cta-toggle-btn:hover,
+.kp-btn-gold:hover,
+.kp-btn-cyan:hover,
+.kp-btn-outline:hover,
+.btn:hover,
+.button:hover,
+input[type="submit"]:hover,
+button[type="submit"]:hover,
+.cta-button:hover,
+a.cta-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4) !important;
+}
+
+.wp-block-group.has-background,
+.wp-block-columns.has-background,
+.ast-article-post,
+.ast-article-inner,
+article.post,
+.keystone-tool-card,
+.glass-card,
+.glass-card-gold,
+.kp-glass,
+.kp-glass-gold,
+.keystone-card,
+.card {
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 70%), #1a1a1a !important;
+  border-radius: 16px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.wp-block-group.has-background:hover,
+.wp-block-columns.has-background:hover,
+.ast-article-post:hover,
+.ast-article-inner:hover,
+article.post:hover,
+.keystone-tool-card:hover,
+.glass-card:hover,
+.glass-card-gold:hover,
+.kp-glass:hover,
+.kp-glass-gold:hover,
+.keystone-card:hover,
+.card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
