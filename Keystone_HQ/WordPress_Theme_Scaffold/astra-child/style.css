@@ -1,233 +1,69 @@
 /*
-Theme Name: Keystone Possibilities Child (keystonepossibilities.ca)
+Theme Name: Keystone Possibilities Child
 Theme URI: https://keystonepossibilities.ca/
-Description: Sleek, high-performance child theme customized for Wayne Stevenson's B2B custom construction and project management services.
-Author: Keystone Architect & Antigravity AI
-Author URI: https://deepmind.google/
+Description: Luxury Child Theme for Keystone Possibilities Ltd — Certified BC Builder #52603. High-end SEO, Local GEO Schema, and Zero-Visual-Drift Architecture.
+Author: Wayne Stevenson & Keystone Orchestration Engine
+Author URI: https://keystonepossibilities.ca/
 Template: astra
-Version: 1.0.5
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: custom-colors, custom-menu, featured-images, full-width-template, theme-options, translation-ready
-Text Domain: astra-child
+Version: 2.1.0
 */
 
-
-/* =====================================================================
-   THEME STYLING SYSTEM (Understated Rugged Luxury Guidelines)
-   ===================================================================== */
-
-/* 1. Global Visual Tokens */
-body {
-    background-color: #1A202C !important; /* Dark Slate Canvas */
-    color: #F7FAFC !important;      /* Warm Matte White text */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    letter-spacing: -0.01em;
+/* ── 100% Visual Lock — Luxury Styling Additions ──────────────────────── */
+.keystone-geo-footer-mesh {
+    background: rgba(10, 15, 29, 0.95);
+    border-top: 1px solid rgba(0, 240, 255, 0.2);
+    padding: 30px 20px;
+    margin-top: 40px;
+    font-family: inherit;
 }
 
-/* Typography Headings */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', sans-serif !important;
-    font-weight: 700 !important;
-    color: #FFFFFF !important;
-    letter-spacing: -0.02em !important;
-}
-
-/* Editorial Blockquotes */
-blockquote {
-    border-left: 4px solid #4A5568 !important; /* Muted Charcoal border */
-    background: #2D3748 !important;            /* Slate background */
-    padding: 20px !important;
-    font-style: italic;
-    color: #E2E8F0 !important;
-    border-radius: 4px;
-}
-
-/* Lower-Third Overlay Typography Compatibility */
-.lower-third-caption {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
+.keystone-geo-footer-mesh h4 {
+    color: #00f0ff;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    letter-spacing: 0.15em; /* Tracked precisely */
-    font-size: 1.25rem;
-    color: #FFFFFF;
-    background: rgba(0, 0, 0, 0.75);
-    padding: 8px 16px;
-    border-radius: 4px;
-    display: inline-block;
+    margin-bottom: 12px;
 }
 
-/* 2. Fast Lazy Video Player Canvas Styling (High-Performance Quiet Luxury Media Facades) */
-.luxury-video-facade {
-    position: relative;
-    width: 100%;
-    /* Explicit aspect ratio calculation preventing layout shifts (CLS avoidance) */
-    aspect-ratio: 16 / 9;
-    background-color: hsl(210, 12%, 10%); /* Pitch Black / Dark slate space */
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    
-    /* Spacing aligned to Astra standard margins */
-    margin: 2.5rem auto;
-    max-width: 100%;
-    
-    /* Hardware acceleration layer promotion (GPU rendering optimization) */
-    transform: translate3d(0, 0, 0);
-    will-change: transform;
+.keystone-geo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
 }
 
-/* Fluid Aspect Ratio Fallback for Legacy Browsers */
-@supports not (aspect-ratio: 16 / 9) {
-   .luxury-video-facade {
-        height: 0;
-        padding-bottom: 56.25%; /* Height = Width * (9 / 16) */
+.keystone-geo-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.keystone-geo-link:hover {
+    color: #00f0ff;
+    text-decoration: underline;
+}
+
+/* Mobile Click-to-Call Sticky Floating Button */
+.keystone-mobile-call-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .keystone-mobile-call-bar {
+        display: flex;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99999;
+        background: linear-gradient(135deg, #00f0ff 0%, #0070f3 100%);
+        color: #000;
+        font-weight: 700;
+        padding: 12px 18px;
+        border-radius: 30px;
+        box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);
+        text-decoration: none;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
     }
 }
-
-/* Spacing adjustments mapped to Astra Grid Breakpoints */
-@media (max-width: 921px) { /* Astra Tablet Breakpoint */
-   .luxury-video-facade {
-        margin: 1.75rem auto;
-        border-radius: 6px;
-    }
-}
-
-@media (max-width: 544px) { /* Astra Mobile Breakpoint */
-   .luxury-video-facade {
-        margin: 1.25rem auto;
-        border-radius: 4px;
-    }
-}
-
-/* Background Image Desaturation (Quiet Luxury HSL Treatment) */
-.facade-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    
-    /* Full-color grading */
-    filter: saturate(100%) contrast(100%) brightness(90%);
-    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
-                filter 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1;
-}
-
-/* Interactive Hover States */
-.luxury-video-facade:hover .facade-background {
-    transform: scale(1.03) translate3d(0, 0, 0);
-    filter: saturate(105%) contrast(100%) brightness(95%);
-}
-
-/* Elegant Overlay and Glassmorphism Play Button */
-.facade-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.4) 100%);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 2;
-}
-
-.play-button {
-    position: relative;
-    z-index: 3;
-    width: 80px;
-    height: 80px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    background: rgba(18, 22, 28, 0.35);
-    
-    /* Glassmorphism blurring filter */
-    backdrop-filter: blur(16px) saturate(100%);
-    -webkit-backdrop-filter: blur(16px) saturate(100%);
-    color: hsl(0, 0%, 98%);
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    outline: none;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 
-                inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    
-    /* Composited translation transitions */
-    transform: translate3d(0, 0, 0);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, background-color, border-color, box-shadow, opacity;
-}
-
-.play-icon {
-    width: 26px;
-    height: 26px;
-    transform: translateX(2px);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Play Button Hover Interaction */
-.luxury-video-facade:hover .play-button {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.75);
-    transform: scale(1.08) translate3d(0, 0, 0);
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45), 
-                inset 0 1px 1px rgba(255, 255, 255, 0.3);
-}
-
-.luxury-video-facade:hover .play-button .play-icon {
-    transform: translateX(2px) scale(1.04);
-}
-
-/* Responsive Play Button Resizing */
-@media (max-width: 544px) {
-   .play-button {
-        width: 64px;
-        height: 64px;
-    }
-   .play-icon {
-        width: 20px;
-        height: 20px;
-    }
-}
-
-/* Dynamic Iframe Container Mounting Style */
-.luxury-video-facade iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-    z-index: 4;
-    
-    /* Hardware accelerated layering upon creation */
-    transform: translate3d(0, 0, 0);
-    will-change: opacity;
-    animation: fadeInFrame 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes fadeInFrame {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
