@@ -11,192 +11,73 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-// ── 1. Enqueue Parent and Child Stylesheets ─────────────────────────────────
+// ── 1. Enqueue Parent, Child Stylesheets & Media Facade Engine ──────────────
 add_action('wp_enqueue_scripts', 'keystone_possibilities_enqueue_styles', 15);
 function keystone_possibilities_enqueue_styles() {
     wp_enqueue_style('astra-parent-style', get_template_directory_uri() . '/style.css');
     wp_enqueue_style('keystone-possibilities-style', get_stylesheet_uri(), array('astra-parent-style'), '2.1.0');
+    wp_enqueue_script('keystone-lazy-player', get_stylesheet_directory_uri() . '/js/lazy-player.js', array(), '2.1.0', true);
 }
 
-// ── 2. Master JSON-LD Schema Injection (Local GEO + Builder Authority) ───────
-add_action('wp_head', 'keystone_possibilities_inject_master_schema', 1);
-function keystone_possibilities_inject_master_schema() {
-    // Only inject on frontend
-    if (is_admin()) return;
-
-    $master_schema = array(
-        "@context" => "https://schema.org",
-        "@graph" => array(
-            // Primary Business Entity
-            array(
-                "@type" => array("ConstructionBusiness", "GeneralContractor", "HomeAndConstructionBusiness"),
-                "@id" => "https://keystonepossibilities.ca/#organization",
-                "name" => "Keystone Possibilities Ltd",
-                "legalName" => "Keystone Possibilities Ltd.",
-                "url" => "https://keystonepossibilities.ca",
-                "logo" => array(
-                    "@type" => "ImageObject",
-                    "@id" => "https://keystonepossibilities.ca/#logo",
-                    "url" => "https://keystonepossibilities.ca/wp-content/uploads/logo.png",
-                    "contentUrl" => "https://keystonepossibilities.ca/wp-content/uploads/logo.png",
-                    "caption" => "Keystone Possibilities Ltd — BC Builder License #52603"
-                ),
-                "image" => "https://keystonepossibilities.ca/wp-content/uploads/logo.png",
-                "description" => "Certified BC Housing Licensed Residential Builder (License #52603) specializing in custom luxury homes, fiduciary project management, Bill 44 multiplex conversions, and BC Hydro civil utility contracting across Squamish, Whistler, Pemberton, West Vancouver, and North Vancouver.",
-                "telephone" => "+1-604-848-9688",
-                "email" => "info@keystonepossibilities.ca",
-                "priceRange" => "$$$$",
-                "currenciesAccepted" => "CAD",
-                "paymentAccepted" => "Bank Transfer, Check, Financing",
-                "identifier" => array(
-                    array(
-                        "@type" => "PropertyValue",
-                        "propertyID" => "BC Housing Licensed Residential Builder",
-                        "value" => "52603",
-                        "url" => "https://www.bchousing.org/licensing-consumer-disclosure/licencee-search"
-                    ),
-                    array(
-                        "@type" => "PropertyValue",
-                        "propertyID" => "BC Hydro Civil Utility Contractor",
-                        "value" => "ES54 Registered Civil Contractor"
-                    ),
-                    array(
-                        "@type" => "PropertyValue",
-                        "propertyID" => "Home Warranty Protection",
-                        "value" => "Mandatory 2-5-10 Year New Home Warranty (WBI / National Home Warranty)"
-                    )
-                ),
-                "license" => "https://www.bchousing.org/licensing-consumer-disclosure/licencee-search",
-                "address" => array(
-                    "@type" => "PostalAddress",
-                    "streetAddress" => "1 Watts Point Road",
-                    "addressLocality" => "Squamish",
-                    "addressRegion" => "BC",
-                    "postalCode" => "V8B 0B1",
-                    "addressCountry" => "CA"
-                ),
-                "geo" => array(
-                    "@type" => "GeoCoordinates",
-                    "latitude" => 49.6767,
-                    "longitude" => -123.1508
-                ),
-                "areaServed" => array(
-                    array("@type" => "City", "name" => "Squamish", "sameAs" => "https://en.wikipedia.org/wiki/Squamish,_British_Columbia"),
-                    array("@type" => "City", "name" => "Whistler", "sameAs" => "https://en.wikipedia.org/wiki/Whistler,_British_Columbia"),
-                    array("@type" => "City", "name" => "Pemberton", "sameAs" => "https://en.wikipedia.org/wiki/Pemberton,_British_Columbia"),
-                    array("@type" => "City", "name" => "West Vancouver", "sameAs" => "https://en.wikipedia.org/wiki/West_Vancouver"),
-                    array("@type" => "City", "name" => "North Vancouver", "sameAs" => "https://en.wikipedia.org/wiki/North_Vancouver_(city)"),
-                    array("@type" => "City", "name" => "Lions Bay", "sameAs" => "https://en.wikipedia.org/wiki/Lions_Bay"),
-                    array("@type" => "City", "name" => "Britannia Beach", "sameAs" => "https://en.wikipedia.org/wiki/Britannia_Beach")
-                ),
-                "hasOfferCatalog" => array(
-                    "@type" => "OfferCatalog",
-                    "name" => "Keystone Possibilities Construction & Fiduciary Services",
-                    "itemListElement" => array(
-                        array(
-                            "@type" => "Offer",
-                            "itemOffered" => array(
-                                "@type" => "Service",
-                                "name" => "Custom Luxury Home Construction",
-                                "description" => "Turnkey design-build contracting with mandatory 2-5-10 Year Home Warranty, Step Code 5 energy performance, and high-altitude alpine framing."
-                            )
-                        ),
-                        array(
-                            "@type" => "Offer",
-                            "itemOffered" => array(
-                                "@type" => "Service",
-                                "name" => "Fiduciary Project Management & Owner Representation",
-                                "description" => "100% transparent cost-plus accounting, trade bidding oversight, municipal permit acceleration, and owner advocacy."
-                            )
-                        ),
-                        array(
-                            "@type" => "Offer",
-                            "itemOffered" => array(
-                                "@type" => "Service",
-                                "name" => "BC Bill 44 Multiplex & Density Conversions",
-                                "description" => "Comprehensive architectural feasibility, civil site servicing, and construction of 3-to-6 unit multiplexes under BC small-scale multi-unit housing legislation."
-                            )
-                        ),
-                        array(
-                            "@type" => "Offer",
-                            "itemOffered" => array(
-                                "@type" => "Service",
-                                "name" => "BC Hydro Registered Civil Contracting",
-                                "description" => "ES54 certified underground utility trenching, ducting, civil excavation, and municipal infrastructure connections."
-                            )
-                        ),
-                        array(
-                            "@type" => "Offer",
-                            "itemOffered" => array(
-                                "@type" => "Service",
-                                "name" => "Construction Feasibility Studies & Land Due Diligence",
-                                "description" => "Pre-acquisition site feasibility, geotechnical review, civil utility costing, and municipal zoning risk assessments."
-                            )
-                        )
-                    )
-                ),
-                "sameAs" => array(
-                    "https://www.facebook.com/profile.php?id=61554185128555",
-                    "https://www.youtube.com/@KeystonePossibilities",
-                    "https://www.instagram.com/keystonepossibilities"
-                ),
-                "founder" => array(
-                    "@type" => "Person",
-                    "@id" => "https://keystonepossibilities.ca/#founder",
-                    "name" => "Wayne Stevenson",
-                    "jobTitle" => "Certified BC Builder & Fiduciary Project Manager",
-                    "url" => "https://keystonepossibilities.ca/about-us-general-contractor-squamish/",
-                    "sameAs" => "https://keystonerecomposition.com/about/"
-                )
-            ),
-            // WebSite Node with SearchAction
-            array(
-                "@type" => "WebSite",
-                "@id" => "https://keystonepossibilities.ca/#website",
-                "url" => "https://keystonepossibilities.ca",
-                "name" => "Keystone Possibilities Ltd",
-                "publisher" => array("@id" => "https://keystonepossibilities.ca/#organization"),
-                "potentialAction" => array(
-                    "@type" => "SearchAction",
-                    "target" => "https://keystonepossibilities.ca/?s={search_term_string}",
-                    "query-input" => "required name=search_term_string"
-                )
-            )
-        )
-    );
-
-    echo "\n<!-- Keystone Possibilities 2026 Master Authority Schema -->\n";
-    echo '<script type="application/ld+json">' . json_encode($master_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . "</script>\n";
-}
-
-// ── 3. Automatic VideoObject Schema Injector for Blog Posts & Showcases ──────
-add_action('wp_head', 'keystone_possibilities_inject_video_schema', 2);
-function keystone_possibilities_inject_video_schema() {
-    if (!is_singular()) return;
-    
-    global $post;
-    if (!$post) return;
-
-    // Check if post contains YouTube embed or video ID
-    $content = $post->post_content;
-    if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $content, $matches)) {
-        $video_id = $matches[1];
-        $video_schema = array(
-            "@context" => "https://schema.org",
-            "@type" => "VideoObject",
-            "name" => get_the_title(),
-            "description" => wp_strip_all_tags(get_the_excerpt() ? get_the_excerpt() : wp_trim_words($content, 35)),
-            "thumbnailUrl" => array(
-                "https://img.youtube.com/vi/{$video_id}/maxresdefault.jpg",
-                "https://img.youtube.com/vi/{$video_id}/hqdefault.jpg"
-            ),
-            "uploadDate" => get_the_date('c'),
-            "embedUrl" => "https://www.youtube.com/embed/{$video_id}",
-            "publisher" => array("@id" => "https://keystonepossibilities.ca/#organization")
-        );
-        echo "\n<!-- Keystone Possibilities VideoObject Schema -->\n";
-        echo '<script type="application/ld+json">' . json_encode($video_schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . "</script>\n";
+// Apply defer attribute to lazy player script for 100/100 Mobile PageSpeed
+add_filter('script_loader_tag', 'keystone_possibilities_add_defer_attribute', 10, 2);
+function keystone_possibilities_add_defer_attribute($tag, $handle) {
+    if ('keystone-lazy-player' === $handle) {
+        return str_replace(' src', ' defer="defer" src', $tag);
     }
+    return $tag;
+}
+
+// ── 2. Require Master JSON-LD Schema & ParentOrganization Engine ─────────────
+require_once __DIR__ . '/inc/seo-schema.php';
+
+// ── 3. WebP Video Facade Player Shortcode ([keystone_video]) ─────────────────
+add_shortcode('keystone_video', 'keystone_possibilities_lazy_video_shortcode');
+function keystone_possibilities_lazy_video_shortcode($atts) {
+    $args = shortcode_atts(array(
+        'id'   => '',
+        'type' => 'youtube',
+        'placeholder_img' => '',
+    ), $atts);
+
+    if (empty($args['id'])) {
+        return '<p style="color: #FC8181; font-family: monospace;">[Error] Media Asset ID is missing.</p>';
+    }
+
+    $media_id   = esc_attr($args['id']);
+    $media_type = esc_attr(strtolower($args['type']));
+    
+    $bg_img = '';
+    if (!empty($args['placeholder_img'])) {
+        $bg_img = esc_url($args['placeholder_img']);
+    } elseif ($media_type === 'youtube') {
+        $bg_img = 'https://img.youtube.com/vi/' . $media_id . '/maxresdefault.jpg';
+    } else {
+        $bg_img = 'https://keystonepossibilities.ca/wp-content/uploads/whistler_luxury_estate.jpg';
+    }
+
+    ob_start();
+    ?>
+    <div class="luxury-video-facade" 
+         data-video-id="<?php echo $media_id; ?>" 
+         data-video-type="<?php echo $media_type; ?>" 
+         role="region" 
+         aria-label="Video Player Placeholder">
+        
+        <div class="facade-background" style="background-image: url('<?php echo $bg_img; ?>');"></div>
+        <div class="facade-overlay"></div>
+        
+        <button class="play-button" aria-label="Play Embedded Video">
+            <svg class="play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5V19L19 12L8 5Z" fill="currentColor"/>
+            </svg>
+        </button>
+        <noscript>
+            <iframe src="https://www.youtube.com/embed/<?php echo $media_id; ?>?rel=0" width="100%" height="100%" style="position: absolute; top: 0; left: 0;" frameborder="0" allowfullscreen></iframe>
+        </noscript>
+    </div>
+    <?php
+    return ob_get_clean();
 }
 
 // ── 4. Rank Math XML Sitemap Sanitizer (Eliminates GSC 301s and 404s) ────────
@@ -212,6 +93,8 @@ function keystone_possibilities_sanitize_rank_math_sitemap($url, $type, $object)
         'mounjaro-muscle-loss',
         'retatrutide-phase-3-data',
         'wolverine-stack',
+        'glp-1',
+        'peptide',
         '.html' // Force clean directory URLs in XML sitemaps
     );
 
@@ -223,6 +106,51 @@ function keystone_possibilities_sanitize_rank_math_sitemap($url, $type, $object)
         }
     }
     return $url;
+}
+
+// ── 4.5. 301 Redirect & 410 Gone Handler for Pruned Legacy URLs ─────────────
+add_action('template_redirect', 'keystone_possibilities_handle_301_410_redirects', 1);
+function keystone_possibilities_handle_301_410_redirects() {
+    $uri = $_SERVER['REQUEST_URI'] ?? '';
+    $path = strtok($uri, '?');
+    
+    // Exact 301 redirects for legacy URLs
+    $redirects_301 = array(
+        '/about-us-general-contractor-squamish.html' => '/about-us-general-contractor-squamish/',
+        '/about-us-general-contractor-squamish' => '/about-us-general-contractor-squamish/',
+        '/west-vancouver-custom-homes.html' => '/west-vancouver-luxury-builder/',
+        '/west-vancouver-custom-homes/' => '/west-vancouver-luxury-builder/',
+        '/west-vancouver-custom-homes' => '/west-vancouver-luxury-builder/',
+        '/squamish-custom-home-builder.html' => '/squamish-general-contractor/',
+        '/whistler-luxury-builder.html' => '/whistler-luxury-home-builder/',
+        '/pemberton-luxury-builder.html' => '/pemberton-luxury-builder/',
+        '/cjc-1295-ipamorelin-glp-1-fatigue.html' => '/blog/',
+        '/mounjaro-muscle-loss.html' => '/blog/',
+        '/retatrutide-phase-3-data.html' => '/blog/',
+        '/wolverine-stack.html' => '/blog/',
+    );
+
+    if (isset($redirects_301[$path])) {
+        wp_redirect(home_url($redirects_301[$path]), 301);
+        exit;
+    }
+
+    // 410 Gone for obsolete legacy files/directories
+    $gone_paths = array(
+        '/keystone_recomposition_/',
+        '/logo/',
+        '/keystone-recomposition-ltd/',
+        '/keystone_recomposition_ltd_invert-removebg-preview/',
+        '/the-journey/',
+    );
+
+    $normalized_path = '/' . trim($path, '/') . '/';
+    if (in_array($normalized_path, $gone_paths, true)) {
+        status_header(410);
+        nocache_headers();
+        echo '410 Gone - Resource permanently removed.';
+        exit;
+    }
 }
 
 // ── 5. Regional SEO/GEO Footer Mesh (Resolves GSC Crawl & Orphan Errors) ─────
