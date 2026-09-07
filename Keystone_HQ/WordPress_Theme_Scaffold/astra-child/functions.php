@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) {
 add_action('wp_enqueue_scripts', 'keystone_possibilities_enqueue_styles', 15);
 function keystone_possibilities_enqueue_styles() {
     wp_enqueue_style('astra-parent-style', get_template_directory_uri() . '/style.css');
-    wp_enqueue_style('keystone-possibilities-style', get_stylesheet_uri(), array('astra-parent-style'), '2.5.0');
-    wp_enqueue_script('keystone-lazy-player', get_stylesheet_directory_uri() . '/js/lazy-player.js', array(), '2.5.0', true);
+    wp_enqueue_style('keystone-possibilities-style', get_stylesheet_uri(), array('astra-parent-style'), '2.5.3');
+    wp_enqueue_script('keystone-lazy-player', get_stylesheet_directory_uri() . '/js/lazy-player.js', array(), '2.5.3', true);
 
     // Pass REST and AJAX endpoints to frontend for interactive lead capture
     wp_localize_script('keystone-lazy-player', 'keystoneData', array(
@@ -301,6 +301,8 @@ function keystone_possibilities_sanitize_content_output($content) {
             'KEYSTONE POSSIBILITIES LTD — CLIENT &amp; CONSULTING SERVICES'
         );
         $content = str_replace($search, $replace, $content);
+        // Replace inline linear-gradient h2 with clean class to eliminate white glare box
+        $content = preg_replace('/<h2[^>]*style=[^>]*linear-gradient[^>]*>(.*?)<\/h2>/i', '<h2 class="kp-hero-title">$1</h2>', $content);
     }
 
     // Strip leaking inline styles, <style> tags, or p-wrapped CSS rules across all content
