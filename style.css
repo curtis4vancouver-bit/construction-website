@@ -5,8 +5,95 @@ Description: Luxury Child Theme for Keystone Possibilities Ltd — Certified BC 
 Author: Wayne Stevenson & Keystone Orchestration Engine
 Author URI: https://keystonepossibilities.ca/
 Template: astra
-Version: 2.0.0
+Version: 2.5.0
 */
+
+/* ==========================================================================
+   Keystone Dark Quiet Luxury System Tokens & HUD Styling
+   ========================================================================== */
+
+:root {
+    --bg-primary: #04070d;
+    --bg-surface: rgba(15, 23, 42, 0.95);
+    --bg-card: rgba(10, 15, 25, 0.85);
+    --gold-primary: #d4af37;
+    --gold-light: #f6d365;
+    --gold-border: rgba(212, 175, 55, 0.45);
+    --gold-glow: 0 0 20px rgba(212, 175, 55, 0.25);
+    --cyan-neon: #00f0ff;
+    --cyan-glow: 0 0 12px rgba(0, 240, 255, 0.4);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --radius-card: 18px;
+    --radius-pill: 9999px;
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Rank Math Analytics Bar Dark Luxury Override (#rank-math-analytics-stats-wrapper)
+   -------------------------------------------------------------------------- */
+#rank-math-analytics-stats-wrapper,
+#rank-math-analytics-stats-bar,
+.rank-math-analytics-stats-bar {
+    background: rgba(10, 15, 25, 0.95) !important;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
+    color: #e2e8f0 !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+    z-index: 99999 !important;
+}
+
+#rank-math-analytics-stats-wrapper span,
+#rank-math-analytics-stats-wrapper strong,
+#rank-math-analytics-stats-bar .stat-value {
+    color: var(--gold-light) !important;
+    font-family: var(--font-heading) !important;
+    font-weight: 700 !important;
+}
+
+#rank-math-analytics-stats-wrapper a,
+#rank-math-analytics-stats-bar .stat-label {
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease-in-out !important;
+}
+
+#rank-math-analytics-stats-wrapper a:hover {
+    color: var(--cyan-neon) !important;
+    text-shadow: var(--cyan-glow) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Above-The-Fold Video Theater Box Container (Zero Error 153)
+   -------------------------------------------------------------------------- */
+.wp-block-embed-youtube.aligncenter,
+.luxury-video-theater {
+    max-width: 880px !important;
+    margin: 25px auto 35px auto !important;
+    border-radius: var(--radius-card) !important;
+    overflow: hidden !important;
+    border: 1px solid var(--gold-border) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), var(--gold-glow) !important;
+    background: #000000 !important;
+}
+
+.wp-block-embed-youtube .wp-block-embed__wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+    height: 0;
+    overflow: hidden;
+}
+
+.wp-block-embed-youtube iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
 
 /* ── 100% Visual Lock — Luxury Styling Additions ──────────────────────── */
 .keystone-geo-footer-mesh {
