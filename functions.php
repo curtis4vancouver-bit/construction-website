@@ -304,13 +304,25 @@ function keystone_possibilities_sanitize_content_output($content) {
     }
 
     // Strip leaking inline styles, <style> tags, or p-wrapped CSS rules across all content
-    if (strpos($content, '.kp-gold-title') !== false || strpos($content, '<style') !== false) {
-        $content = preg_replace('/<style\b[^>]*>[\s\S]*?<\/style>/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?\.kp-gold-title[\s\S]*?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?header\.entry-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?#ks-top-help-td\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-    }
+    $content = preg_replace('/<style\b[^>]*>[\s\S]*?<\/style>/i', '', $content);
+
+    $css_leak_patterns = array(
+        '/(<p>\s*)?\.kp-regional-grid\s*(?:>|&gt;)\s*p[\s\S]*?(?:grid-column:\s*1\s*!important;\s*\}\s*\}|@media[^{]*\{[^{}]*\{[^{}]*\}\s*\})\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-regional-grid\s*(?:>|&gt;)\s*p\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-glass:empty\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-regional-grid\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?@media\s*\(\s*max-width:\s*768px\s*\)\s*\{\s*\.kp-regional-grid[\s\S]*?\}\s*\}/i',
+        '/(<p>\s*)?\.kp-gold-title[\s\S]*?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-gold-title\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-glass(?::hover)?\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-h-scroll\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-scroll-card\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?\.kp-step\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?header\.entry-header\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?#ks-top-help-td\s*\{[^}]*\}\s*(<\/p>)?/i',
+        '/(<p>\s*)?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i',
+    );
+    $content = preg_replace($css_leak_patterns, '', $content);
 
     return $content;
 }

@@ -195,10 +195,10 @@ function keystone_possibilities_run_v250_migration() {
     update_option($migration_key, current_time('mysql'), false);
 }
 
-// ── 3b. v2.5.1 Database Sanitization Migration (Strip Leaking CSS from Post Content) ─
-add_action('init', 'keystone_possibilities_run_v251_migration', 6);
-function keystone_possibilities_run_v251_migration() {
-    $migration_key = 'keystone_migration_v251_css_cleaned';
+// ── 3b. v2.5.2 Database Sanitization Migration (Strip Leaking Regional Grid & All CSS from Post Content) ─
+add_action('init', 'keystone_possibilities_run_v252_migration', 6);
+function keystone_possibilities_run_v252_migration() {
+    $migration_key = 'keystone_migration_v252_css_cleaned';
     if (get_option($migration_key)) {
         return;
     }
@@ -209,11 +209,24 @@ function keystone_possibilities_run_v251_migration() {
         $content = $home->post_content;
 
         // Strip style tags and raw/p-wrapped CSS rules
-        $content = preg_replace('/<style\b[^>]*>[\s\S]*?<\/style>/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?\.kp-gold-title[\s\S]*?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?header\.entry-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?#ks-top-help-td\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
-        $content = preg_replace('/(<p>\s*)?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $patterns = array(
+            '/<style\b[^>]*>[\s\S]*?<\/style>/i',
+            '/(<p>\s*)?\.kp-regional-grid\s*(?:>|&gt;)\s*p[\s\S]*?(?:grid-column:\s*1\s*!important;\s*\}\s*\}|@media[^{]*\{[^{}]*\{[^{}]*\}\s*\})\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-regional-grid\s*(?:>|&gt;)\s*p\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-glass:empty\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-regional-grid\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?@media\s*\(\s*max-width:\s*768px\s*\)\s*\{\s*\.kp-regional-grid[\s\S]*?\}\s*\}/i',
+            '/(<p>\s*)?\.kp-gold-title[\s\S]*?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-gold-title\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-glass(?::hover)?\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-h-scroll\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-scroll-card\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?\.kp-step\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?header\.entry-header\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?#ks-top-help-td\s*\{[^}]*\}\s*(<\/p>)?/i',
+            '/(<p>\s*)?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i',
+        );
+        $content = preg_replace($patterns, '', $content);
 
         // Fix brand consistency
         $content = str_replace('KEYSTONE RECOMPOSITION', 'KEYSTONE POSSIBILITIES LTD', $content);
