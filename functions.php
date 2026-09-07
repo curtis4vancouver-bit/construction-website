@@ -302,7 +302,7 @@ function keystone_possibilities_sanitize_content_output($content) {
         );
         $content = str_replace($search, $replace, $content);
         // Replace inline linear-gradient h2 with clean class to eliminate white glare box
-        $content = preg_replace('/<h2[^>]*style=[^>]*linear-gradient[^>]*>(.*?)<\/h2>/i', '<h2 class="kp-hero-title">$1</h2>', $content);
+        $content = preg_replace('/(<h2[^>]*?)\s*style=["\'][^"\']*linear-gradient[^"\']*["\']([^>]*>)/i', '$1 class="kp-hero-title"$2', $content);
     }
 
     // Strip leaking inline styles, <style> tags, or p-wrapped CSS rules across all content
@@ -328,4 +328,30 @@ function keystone_possibilities_sanitize_content_output($content) {
 
     return $content;
 }
-
+// ── 7. Critical Hero Title CSS (Eliminates White Glare Box & Enforces Quiet Luxury Gold)
+add_action('wp_head', 'keystone_possibilities_inject_critical_hero_css', 99);
+function keystone_possibilities_inject_critical_hero_css() {
+    ?>
+    <style id="keystone-hero-title-critical-fix">
+    #ks-possibilities-header h2,
+    #ks-recomposition-header h2,
+    .kp-hero-title {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        font-size: 2.1rem !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.08em !important;
+        color: #d4af37 !important; /* Elegant warm quiet luxury gold */
+        background: none !important;
+        background-image: none !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.35) !important;
+        display: inline-block !important;
+    }
+    </style>
+    <?php
+}
