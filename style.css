@@ -5,7 +5,7 @@ Description: Luxury Child Theme for Keystone Possibilities Ltd — Certified BC 
 Author: Wayne Stevenson & Keystone Orchestration Engine
 Author URI: https://keystonepossibilities.ca/
 Template: astra
-Version: 2.5.0
+Version: 2.5.1
 */
 
 /* ==========================================================================
@@ -279,4 +279,99 @@ article.post:hover,
   transform: translateY(-4px) !important;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5) !important;
 }
+
+/* ==========================================================================
+   Homepage & Luxury Component Layout Overrides (Zero Leaking Inline CSS)
+   ========================================================================== */
+
+/* Hide Home entry-header and archive description on homepage */
+.home .entry-header,
+.home .ast-archive-description {
+    display: none !important;
+}
+
+header.entry-header {
+    margin-top: 25px !important;
+    margin-bottom: 45px !important;
+}
+
+#ks-top-help-td {
+    padding: 10px 20px;
+    text-align: center;
+    background: rgba(196, 162, 101, 0.15);
+    border-bottom: 1px solid rgba(196, 162, 101, 0.3);
+    font-family: Outfit, sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #C4A265;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+#ks-possibilities-header,
+#ks-recomposition-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.kp-gold-title {
+    font-family: Outfit, sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: linear-gradient(135deg, #ffffff 15%, #C4A265 85%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 16px rgba(196, 162, 101, 0.75));
+}
+
+.kp-glass {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(4, 7, 13, 0.98) 100%);
+    border: 1.5px solid rgba(196, 162, 101, 0.4);
+    border-radius: 12px;
+    padding: 2.2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    transition: all 0.35s ease;
+    box-sizing: border-box;
+}
+
+.kp-glass:hover {
+    border-color: #C4A265;
+    box-shadow: 0 0 35px rgba(196, 162, 101, 0.85);
+    transform: translateY(-4px);
+}
+
+.kp-h-scroll {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 1rem 0.5rem 1.8rem 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #C4A265 #04070d;
+}
+
+.kp-scroll-card {
+    flex: 0 0 380px;
+    scroll-snap-align: start;
+}
+
+.kp-step {
+    display: inline-block;
+    font-family: Outfit, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #C4A265;
+    background: rgba(196, 162, 101, 0.15);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    border-left: 3px solid #C4A265;
+}
+
 

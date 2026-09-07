@@ -284,10 +284,10 @@ function keystone_possibilities_render_geo_mesh() {
     </a>
     <?php
 }
-// ── 6. Real-Time Brand Sanitization Filter (Guarantees Zero Brand Contradiction)
+// ── 6. Real-Time Brand Sanitization & Zero CSS Leak Filter ──────────────────
 add_filter('the_content', 'keystone_possibilities_sanitize_content_output', 999);
 function keystone_possibilities_sanitize_content_output($content) {
-    if (is_front_page() || (function_exists('get_the_ID') && get_the_ID() === 563)) {
+    if (is_front_page() || is_home() || (function_exists('get_the_ID') && get_the_ID() === 563)) {
         $search = array(
             'KEYSTONE RECOMPOSITION',
             'ks-recomposition-header',
@@ -302,5 +302,16 @@ function keystone_possibilities_sanitize_content_output($content) {
         );
         $content = str_replace($search, $replace, $content);
     }
+
+    // Strip leaking inline styles, <style> tags, or p-wrapped CSS rules across all content
+    if (strpos($content, '.kp-gold-title') !== false || strpos($content, '<style') !== false) {
+        $content = preg_replace('/<style\b[^>]*>[\s\S]*?<\/style>/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?\.kp-gold-title[\s\S]*?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?header\.entry-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?#ks-top-help-td\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+    }
+
     return $content;
 }
+

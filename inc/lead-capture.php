@@ -195,6 +195,42 @@ function keystone_possibilities_run_v250_migration() {
     update_option($migration_key, current_time('mysql'), false);
 }
 
+// ── 3b. v2.5.1 Database Sanitization Migration (Strip Leaking CSS from Post Content) ─
+add_action('init', 'keystone_possibilities_run_v251_migration', 6);
+function keystone_possibilities_run_v251_migration() {
+    $migration_key = 'keystone_migration_v251_css_cleaned';
+    if (get_option($migration_key)) {
+        return;
+    }
+
+    // Sanitize Homepage (Page ID 563) post_content directly in DB
+    $home = get_post(563);
+    if ($home && !empty($home->post_content)) {
+        $content = $home->post_content;
+
+        // Strip style tags and raw/p-wrapped CSS rules
+        $content = preg_replace('/<style\b[^>]*>[\s\S]*?<\/style>/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?\.kp-gold-title[\s\S]*?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?header\.entry-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?#ks-top-help-td\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+        $content = preg_replace('/(<p>\s*)?#ks-(?:possibilities|recomposition)-header\s*\{[^}]*\}\s*(<\/p>)?/i', '', $content);
+
+        // Fix brand consistency
+        $content = str_replace('KEYSTONE RECOMPOSITION', 'KEYSTONE POSSIBILITIES LTD', $content);
+        $content = str_replace('ks-recomposition-header', 'ks-possibilities-header', $content);
+        $content = preg_replace('/KEYSTONE POSSIBILITY HELP TD[^<]*/i', 'KEYSTONE POSSIBILITIES LTD — CLIENT &amp; CONSULTING SERVICES', $content);
+
+        wp_update_post(array(
+            'ID' => 563,
+            'post_content' => $content
+        ));
+    }
+
+    // Mark migration as successfully applied
+    update_option($migration_key, current_time('mysql'), false);
+}
+
+
 // ── 4. Global Interactive Lead Form Handler (Zero Popup / Inline Luxury UX) ──
 add_action('wp_footer', 'keystone_possibilities_render_lead_form_script', 30);
 function keystone_possibilities_render_lead_form_script() {
