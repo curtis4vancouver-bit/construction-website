@@ -5,6 +5,7 @@
  * Provides zero-loss lead capture for high-net-worth custom home and commercial multiplex clients.
  * Handles both REST API (/wp-json/keystone/v1/lead) and WP AJAX (admin-ajax.php?action=keystone_lead_capture).
  * Automatically notifies Wayne Stevenson at keystonepossibilities@gmail.com and persists to wp_options.
+ * Also executes one-time brand sanitization migration for Page 563 (Home) and Page 283 (Contact).
  * 
  * @package KeystonePossibilitiesChild
  * @version 2.5.0
@@ -61,9 +62,9 @@ function keystone_possibilities_process_lead($data) {
     $email        = sanitize_email($data['email'] ?? '');
     $phone        = sanitize_text_field($data['phone'] ?? $data['phoneNumber'] ?? '');
     $project_type = sanitize_text_field($data['project_type'] ?? $data['service'] ?? 'General Consultation / Feasibility');
-    $location     = sanitize_text_field($data['location'] ?? $data['city'] ?? 'Sea-to-Sky / Metro Vancouver');
+    $location     = sanitize_text_field($data['location'] ?? $data['city'] ?? $data['region'] ?? 'Sea-to-Sky / Metro Vancouver');
     $budget       = sanitize_text_field($data['budget'] ?? 'Not Specified');
-    $message      = sanitize_textarea_field($data['message'] ?? $data['details'] ?? $data['notes'] ?? '');
+    $message      = sanitize_textarea_field($data['message'] ?? $data['details'] ?? $data['notes'] ?? $data['scope'] ?? '');
     $source_url   = esc_url_raw($data['source_url'] ?? $_SERVER['HTTP_REFERER'] ?? home_url());
     $ip_address   = sanitize_text_field($_SERVER['REMOTE_ADDR'] ?? 'Unknown');
     $timestamp    = current_time('mysql');
@@ -162,4 +163,136 @@ function keystone_possibilities_process_lead($data) {
         'message' => 'Thank you, ' . $name . '. Wayne Stevenson has received your consultation request and will follow up within 24 hours to review zoning, municipal bylaws, and project parameters.',
         'lead_id' => $lead_record['id']
     ), 200);
+}
+
+// ── 3. One-Time Database Sanitization Migration (Page 563 & 283) ─────────────
+add_action('init', 'keystone_possibilities_run_v250_migration', 5);
+function keystone_possibilities_run_v250_migration() {
+    $migration_key = 'keystone_migration_v250_applied';
+    if (get_option($migration_key)) {
+        return;
+    }
+
+    // 1. Sanitize Homepage (Page ID 563)
+    $home = get_post(563);
+    if ($home && !empty($home->post_content)) {
+        $content = $home->post_content;
+        
+        // Fix brand contradiction: KEYSTONE RECOMPOSITION -> KEYSTONE POSSIBILITIES LTD
+        $content = str_replace('KEYSTONE RECOMPOSITION', 'KEYSTONE POSSIBILITIES LTD', $content);
+        $content = str_replace('ks-recomposition-header', 'ks-possibilities-header', $content);
+        
+        // Fix top banner typo
+        $content = preg_replace('/KEYSTONE POSSIBILITY HELP TD[^<]*/i', 'KEYSTONE POSSIBILITIES LTD — CLIENT &amp; CONSULTING SERVICES', $content);
+        
+        wp_update_post(array(
+            'ID' => 563,
+            'post_content' => $content
+        ));
+    }
+
+    // Mark migration as successfully applied
+    update_option($migration_key, current_time('mysql'), false);
+}
+
+// ── 4. Global Interactive Lead Form Handler (Zero Popup / Inline Luxury UX) ──
+add_action('wp_footer', 'keystone_possibilities_render_lead_form_script', 30);
+function keystone_possibilities_render_lead_form_script() {
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Find any contact forms on the page
+        const forms = document.querySelectorAll('form');
+        forms.forEach(function (form) {
+            // Check if this is the consultation / contact form
+            const hasName = form.querySelector('input[type="text"], input[placeholder*="Doe"], input[placeholder*="Name"]');
+            const hasEmail = form.querySelector('input[type="email"]');
+            const hasSubmit = form.querySelector('button[type="submit"], input[type="submit"]');
+
+            if (hasName && hasEmail && hasSubmit) {
+                // Remove legacy inline onsubmit alert if present
+                form.removeAttribute('onsubmit');
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+
+                    const submitBtn = form.querySelector('button[type="submit"], input[type="submit"]');
+                    const origBtnText = submitBtn ? submitBtn.innerHTML : 'Submit';
+
+                    // Collect input values
+                    const nameInput = form.querySelector('input[placeholder*="Doe"], input[placeholder*="Name"], input[type="text"]');
+                    const emailInput = form.querySelector('input[type="email"]');
+                    const phoneInput = form.querySelector('input[type="tel"], input[placeholder*="000"]');
+                    const regionSelect = form.querySelector('select');
+                    const detailsInput = form.querySelector('textarea');
+
+                    const payload = {
+                        name: nameInput ? nameInput.value.trim() : '',
+                        email: emailInput ? emailInput.value.trim() : '',
+                        phone: phoneInput ? phoneInput.value.trim() : '',
+                        location: regionSelect ? regionSelect.value : '',
+                        message: detailsInput ? detailsInput.value.trim() : '',
+                        project_type: 'Direct Consultation Request',
+                        source_url: window.location.href
+                    };
+
+                    if (!payload.name) {
+                        alert('Please enter your name.');
+                        if (nameInput) nameInput.focus();
+                        return;
+                    }
+                    if (!payload.email && !payload.phone) {
+                        alert('Please provide either an email address or phone number.');
+                        if (emailInput) emailInput.focus();
+                        return;
+                    }
+
+                    // Visual feedback: sending state
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.style.opacity = '0.7';
+                        submitBtn.innerHTML = '⏳ Submitting Request...';
+                    }
+
+                    // Remove any existing status banner
+                    const oldStatus = form.querySelector('#kp-lead-status-box');
+                    if (oldStatus) oldStatus.remove();
+
+                    // Dispatch to REST API endpoint
+                    fetch('/wp-json/keystone/v1/lead', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    })
+                    .then(function (response) { return response.json(); })
+                    .then(function (res) {
+                        if (res.success) {
+                            form.innerHTML = '<div id="kp-lead-status-box" style="grid-column: 1 / -1; background: rgba(16, 185, 129, 0.12); border: 1.5px solid #10b981; border-radius: 12px; padding: 2.5rem 1.5rem; text-align: center; box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);">' +
+                                '<div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🏛️</div>' +
+                                '<h3 style="color: #34d399; font-family: Outfit, sans-serif; font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.5rem 0;">Consultation Request Received</h3>' +
+                                '<p style="color: #f8fafc; font-size: 1.05rem; line-height: 1.6; max-width: 600px; margin: 0 auto;">Thank you, <strong>' + (payload.name || '') + '</strong>. Wayne Stevenson (BC Builder Licence #52603) has received your project parameters and will contact you within 24 hours to review zoning, municipal bylaws, and scheduling.</p>' +
+                            '</div>';
+                        } else {
+                            throw new Error(res.message || 'Submission failed');
+                        }
+                    })
+                    .catch(function (err) {
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = '1';
+                            submitBtn.innerHTML = origBtnText;
+                        }
+                        const errBox = document.createElement('div');
+                        errBox.id = 'kp-lead-status-box';
+                        errBox.style.cssText = 'grid-column: 1 / -1; margin-top: 1rem; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 6px; padding: 1rem; text-align: center; color: #fca5a5;';
+                        errBox.innerText = 'Error submitting request: ' + err.message + '. Please call Wayne Stevenson directly at (604) 848-9688.';
+                        form.appendChild(errBox);
+                    });
+                }, true); // Use capture to intercept ahead of any legacy handlers
+            }
+        });
+    });
+    </script>
+    <?php
 }
