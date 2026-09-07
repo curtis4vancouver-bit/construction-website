@@ -284,3 +284,23 @@ function keystone_possibilities_render_geo_mesh() {
     </a>
     <?php
 }
+// ── 6. Real-Time Brand Sanitization Filter (Guarantees Zero Brand Contradiction)
+add_filter('the_content', 'keystone_possibilities_sanitize_content_output', 999);
+function keystone_possibilities_sanitize_content_output($content) {
+    if (is_front_page() || (function_exists('get_the_ID') && get_the_ID() === 563)) {
+        $search = array(
+            'KEYSTONE RECOMPOSITION',
+            'ks-recomposition-header',
+            '#ks-recomposition-header',
+            'KEYSTONE POSSIBILITY HELP TD'
+        );
+        $replace = array(
+            'KEYSTONE POSSIBILITIES LTD',
+            'ks-possibilities-header',
+            '#ks-possibilities-header',
+            'KEYSTONE POSSIBILITIES LTD — CLIENT &amp; CONSULTING SERVICES'
+        );
+        $content = str_replace($search, $replace, $content);
+    }
+    return $content;
+}
